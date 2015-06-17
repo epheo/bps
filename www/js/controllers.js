@@ -53,13 +53,13 @@ angular.module('starter.controllers', [])
 })
 
 .controller('ActivityCtrl', function($scope, $stateParams) {
-      console.log(sinAndCos())
+
     nv.addGraph(function() {
         var chart = nv.models.lineChart();
         var fitScreen = false;
         var width = 550;
         var height = 300;
-        var zoom = 1;
+        var zoom = .8;
 
         chart.useInteractiveGuideline(true);
         chart.xAxis
@@ -71,13 +71,14 @@ angular.module('starter.controllers', [])
 
         chart.yAxis
             .axisLabel('HeartRate (bpm)')
-            .tickFormat(d3.format(',.2f'));
+            .tickFormat(d3.format(',r'));
+
 
         d3.select('#chart1 svg')
             .attr('perserveAspectRatio', 'xMinYMid')
             .attr('width', width)
             .attr('height', height)
-            .datum(sinAndCos());
+            .datum(retrieveData());
 
         setChartViewBox();
         resizeChart();
@@ -136,23 +137,67 @@ angular.module('starter.controllers', [])
         return chart;
     });
 
-    function sinAndCos() {
-        var sin = [],
-            cos = [];
 
-        for (var i = 0; i < 100; i++) {
-            sin.push({x: i, y: Math.sin(i/10) });
-            cos.push({x: i, y: .5 * Math.cos(i/10)});
-        }
+    function retrieveData() {
+
+        var partner1 = [
+                { x: 1434402430, y:	74},
+                { x: 1434402490, y:	78},
+                { x: 1434402550, y:	69},
+                { x: 1434402610, y:	70},
+                { x: 1434402670, y:	96},
+                { x: 1434402730, y:	70},
+                { x: 1434402790, y:	82},
+                { x: 1434402850, y:	93},
+                { x: 1434402910, y:	82},
+                { x: 1434402970, y:	96},
+                { x: 1434403030, y:	98},
+                { x: 1434403090, y:	95},
+                { x: 1434403150, y:	94},
+                { x: 1434403210, y:	122},
+                { x: 1434403270, y:	143},
+                { x: 1434403330, y:	145},
+                { x: 1434403390, y:	86},
+                { x: 1434403450, y:	86},
+                { x: 1434403510, y:	78},
+                { x: 1434403570, y:	69},
+                { x: 1434403630, y:	70},
+                { x: 1434403690, y:	69},
+                { x: 1434403750, y:	70} ];
+
+        var partner2 = [
+                { x: 1434402430, y:	70},
+                { x: 1434402490, y:	73},
+                { x: 1434402550, y:	72},
+                { x: 1434402610, y:	82},
+                { x: 1434402670, y:	93},
+                { x: 1434402730, y:	82},
+                { x: 1434402790, y:	96},
+                { x: 1434402850, y:	83},
+                { x: 1434402910, y:	84},
+                { x: 1434402970, y:	82},
+                { x: 1434403030, y:	88},
+                { x: 1434403090, y:	96},
+                { x: 1434403150, y:	98},
+                { x: 1434403210, y:	95},
+                { x: 1434403270, y:	94},
+                { x: 1434403330, y:	122},
+                { x: 1434403390, y:	143},
+                { x: 1434403450, y:	145},
+                { x: 1434403510, y:	86},
+                { x: 1434403570, y:	86},
+                { x: 1434403630, y:	78},
+                { x: 1434403690, y:	69},
+                { x: 1434403750, y:	70} ];
 
         return [
             {
-                values: sin,
+                values: partner1,
                 key: "Partner 1",
                 color: "#ff7f0e"
             },
             {
-                values: cos,
+                values: partner2,
                 key: "Partner 2",
                 color: "#2ca02c"
             }
