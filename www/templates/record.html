@@ -1,5 +1,13 @@
 <ion-view view-title="Record">
   <ion-content>
-    <h1>Record a new activity</h1>
+	<div>
+	  <p>Current Heart Rate: <b>{{heartRate}}</b> BPM</p>
+	</div>
+	<div id="realTimeChart" class='with-transitions'>
+	  <svg></svg>
+	</div>
+	<button class="button button-block button-positive">
+		Record a new activity
+	</button>
   </ion-content>
 </ion-view>

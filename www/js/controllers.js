@@ -1,4 +1,4 @@
-angular.module('starter.controllers', [])
+angular.module('bps.controllers', [])
 
 .controller('AppCtrl', function($scope, $ionicModal, $timeout) {
   
@@ -203,5 +203,70 @@ angular.module('starter.controllers', [])
             }
         ];
     }
+})
+.controller('RecordCtrl',['$scope', '$interval',  function($scope, $interval) {
+        $scope.heartRate = 69;
 
-});
+        $scope.heartRateHistory = [{
+            values: [],
+            key: "You",
+            color: "#ff7f0e"
+        }];
+
+        var promise = $interval(function() {
+            // Rnd bpm 40..140
+            var hr = Math.floor((Math.random() * 100) + 40);
+            // Update scope
+            $scope.heartRate = hr;
+            //Check if object was correctly initialized
+            if ($scope.heartRateHistory[0]) {
+                var hrValues = $scope.heartRateHistory[0].values;
+                var point ={
+                    x: Date.now(),
+                    y: hr
+                };
+                hrValues.push(point);
+                console.log(hrValues);
+                // Remove 1st element of array if too long
+                if (hrValues.length > 10) {
+                    hrValues.shift();
+                }
+            }
+
+            // Refresh graph
+            loadGraph();
+        },1000);
+
+        // Destroy interval service correctly
+        $scope.$on('$destroy', function() {
+            if(angular.isDefined(promise)){
+                $interval.cancel(promise);
+                promise = undefined;
+            }
+        });
+
+        var chart = nv.models.lineChart().useInteractiveGuideline(true);
+
+        chart.xAxis
+            .tickFormat(d3.format(',r'));
+
+        chart.lines.dispatch.on("elementClick", function(evt) {
+            console.log(evt);
+        });
+
+        chart.yAxis
+            .axisLabel('HeartRate (bpm)')
+            .tickFormat(d3.format(',r'));
+
+        function loadGraph() {
+            console.log('Loading Graph...');
+            d3.select('#realTimeChart svg')
+                .datum($scope.heartRateHistory)
+                .transition().duration(500)
+                .call(chart);
+            nv.utils.windowResize(chart.update);
+            return chart;
+        }
+
+        nv.addGraph(loadGraph);
+    }]);
